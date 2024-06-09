@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { View, Button, TextInput, ScrollView } from "react-native";
+import FormRenderer from "./FormRenderer";
+import { predefinedXML } from "./xmlfile";
 
-export default function App() {
+const App = () => {
+  const [xmlInput, setXmlInput] = useState("");
+  const [xmlData, setXmlData] = useState("");
+
+  const handleRenderFromFile = () => {
+    console.log("Rendering form from predefined XML file");
+    setXmlData(predefinedXML);
+  };
+
+  const handleRenderFromInput = () => {
+    console.log("Rendering form from user input XML");
+    setXmlData(xmlInput);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ScrollView contentContainerStyle={{ padding: 20 }}>
+      <Button
+        title="Render Form from XML File"
+        onPress={handleRenderFromFile}
+      />
+      <TextInput
+        style={{ borderWidth: 1, marginVertical: 20, height: 100, padding: 10 }}
+        placeholder="Enter XML here"
+        multiline
+        onChangeText={(text) => setXmlInput(text)}
+      />
+      <Button
+        title="Render Form from XML Input"
+        onPress={handleRenderFromInput}
+      />
+      {xmlData ? <FormRenderer xmlData={xmlData} /> : null}
+    </ScrollView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
